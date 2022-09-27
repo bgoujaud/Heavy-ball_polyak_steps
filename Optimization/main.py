@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from Optimization.Functions import Quadratic
 from Optimization.Algorithms import HeavyBall, ConjugateGradient
 
+precision = np.float128
 seed = 42
 np.random.seed(seed=seed)
 d = 50
@@ -13,11 +14,11 @@ nb_steps = 100
 log_mu = -2
 log_L = 2
 
-eig_list = 10 ** np.linspace(log_mu, log_L, d)
+eig_list = 10 ** np.linspace(log_mu, log_L, d).astype(precision)
 kappa = 10 ** (log_L - log_mu)
 
 f = Quadratic(eig_list=eig_list)
-x0 = np.random.randn(d)
+x0 = np.random.randn(d).astype(precision)
 
 legend_list = list()
 distances = list()
