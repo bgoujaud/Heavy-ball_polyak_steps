@@ -8,13 +8,13 @@ from Optimization.Algorithms import HeavyBall, ConjugateGradient
 precision = np.float128
 seed = 42
 np.random.seed(seed=seed)
-d = 50
-nb_steps = 100
+d = 200
+nb_steps = 2*d
 
-log_mu = -2
-log_L = 2
+log_mu = -4
+log_L = 1
 
-eig_list = 10 ** np.linspace(log_mu, log_L, d).astype(precision)
+eig_list = np.logspace(log_mu, log_L, d).astype(precision)
 kappa = 10 ** (log_L - log_mu)
 
 f = Quadratic(eig_list=eig_list)
@@ -60,7 +60,7 @@ plt.plot(np.array(distances).T)
 plt.xlabel("Iterations")
 plt.ylabel("Distances to optimal")
 plt.legend(legend_list, fontsize=22)
-plt.savefig("../documents/figures/distances.png")
+plt.savefig("figures/kappa_%s_d_%s_distances.png" % (kappa, d))
 
 plt.figure(figsize=(15, 8))
 # plt.title("Comparison of excess losses over {} steps of first order methods \n"
@@ -71,4 +71,4 @@ plt.plot(np.array(excess_losses).T)
 plt.xlabel("Iterations")
 plt.ylabel("Excess losses")
 plt.legend(legend_list, fontsize=22)
-plt.savefig("../documents/figures/losses.png")
+plt.savefig("figures/kappa_%s_d_%s_losses.png" % (kappa, d))
