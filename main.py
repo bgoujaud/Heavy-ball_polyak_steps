@@ -5,17 +5,18 @@ import matplotlib.pyplot as plt
 from Optimization.Functions import Quadratic
 from Optimization.Algorithms import HeavyBall, ConjugateGradient
 
+kappa = 10**6
+d = 10**3
+
 precision = np.float128
 seed = 42
 np.random.seed(seed=seed)
-d = 200
 nb_steps = 2*d
 
-log_mu = -4
 log_L = 1
+log_mu = log_L - np.log(kappa) / np.log(10)
 
 eig_list = np.logspace(log_mu, log_L, d).astype(precision)
-kappa = 10 ** (log_L - log_mu)
 
 f = Quadratic(eig_list=eig_list)
 x0 = np.random.randn(d).astype(precision)
@@ -49,7 +50,8 @@ excess_losses.append(excess_loss)
 
 legend_list.append(alg.name)
 
-plt.rcParams.update({'font.size': 24})
+fontsize = 28
+plt.rcParams.update({'font.size': fontsize})
 
 plt.figure(figsize=(15, 8))
 # plt.title("Comparison of distances to optimum over {} steps of first order methods \n"
@@ -59,8 +61,8 @@ plt.yscale("log")
 plt.plot(np.array(distances).T)
 plt.xlabel("Iterations")
 plt.ylabel("Distances to optimal")
-plt.legend(legend_list, fontsize=22)
-plt.savefig("figures/kappa_%s_d_%s_distances.png" % (kappa, d))
+plt.legend(legend_list, fontsize=fontsize-2)
+plt.savefig("high_precision_figures/kappa_%s_d_%s_distances.png" % (kappa, d))
 
 plt.figure(figsize=(15, 8))
 # plt.title("Comparison of excess losses over {} steps of first order methods \n"
@@ -70,5 +72,5 @@ plt.yscale("log")
 plt.plot(np.array(excess_losses).T)
 plt.xlabel("Iterations")
 plt.ylabel("Excess losses")
-plt.legend(legend_list, fontsize=22)
-plt.savefig("figures/kappa_%s_d_%s_losses.png" % (kappa, d))
+plt.legend(legend_list, fontsize=fontsize-2)
+plt.savefig("high_precision_figures/kappa_%s_d_%s_losses.png" % (kappa, d))

@@ -8,7 +8,7 @@ class ConjugateGradient(Algorithm):
     def __init__(self):
         super().__init__()
 
-        self.name = "CG"
+        self.name = "Conjugate gradient"
 
     def run(self, function, x0, nb_steps):
         x_list = [x0]
