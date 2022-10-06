@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.stats import ortho_group
 
-from Optimization.Functions.function import Function
+from .function import Function
 
 
 class Quadratic(Function):
@@ -15,6 +15,7 @@ class Quadratic(Function):
 
         self.mu = min(eig_list)
         self.L = max(eig_list)
+        self.argmin = np.zeros(self.dimension)
         self.min_value = 0
 
     def forward(self, x):

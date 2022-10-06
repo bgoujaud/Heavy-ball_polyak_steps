@@ -1,0 +1,70 @@
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+
+from .Algorithms import GradientDescent, HeavyBall, ConjugateGradient
+
+
+def compare_methods(dimension, function, nb_steps, path, seed=None):
+
+    np.random.seed(seed=seed)
+    distances = list()
+    legend_list = list()
+    excess_losses = list()
+
+    x0 = np.random.randn(dimension).astype(np.float128)
+
+    for alg in [GradientDescent(parametrization="Constant"),
+                GradientDescent(parametrization="PS variant"),
+                GradientDescent(parametrization="PS"),
+                HeavyBall(parametrization="Constant"),
+                HeavyBall(parametrization="Adaptive"),
+                ConjugateGradient()
+                ]:
+
+        x_list, f_list = alg.run(function=function, x0=x0, nb_steps=nb_steps)
+
+        distance = [np.sum((x - function.argmin) ** 2) for x in x_list]
+        distances.append(distance)
+
+        excess_loss = [fx - function.min_value for fx in f_list]
+        excess_losses.append(excess_loss)
+
+        legend_list.append(alg.name)
+
+    path_search = os.sep
+    for intermediate_dir in path.split(os.sep)[:-1]:
+        path_search = os.path.join(path_search, intermediate_dir)
+        if not os.path.isdir(path_search):
+            os.mkdir(path_search)
+
+    fontsize = 38
+    plt.rcParams.update({'font.size': fontsize})
+    default_colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+    colors = [default_colors[index] for index in [0, 3, 5, 2, 1, 4]]
+    linestyles = ["-", "--"] * 3
+
+    plt.figure(figsize=(15, 8))
+    plt.gca().set_prop_cycle(color=colors, linestyle=linestyles)
+    plt.yscale("log")
+    lines = plt.plot(np.array(distances).T, lw=4)
+    plt.ylim(ymin=max(10**-30, 10**-.2*np.min(distances)))
+    plt.xlabel("Iterations")
+    plt.ylabel("Distance to optimum")
+    plt.savefig(path + "_distances.png", bbox_inches="tight")
+
+    legend_fig = plt.figure(figsize=(15, 8))
+    legend_fig.legend(lines, legend_list, fontsize=26, loc='center', fancybox=True, shadow=True)
+    plt.savefig(path + "_legend.png", bbox_inches="tight")
+
+    fig = plt.figure(figsize=(15, 8))
+    ax = fig.add_subplot(111)
+    ax.set_prop_cycle(color=colors, linestyle=linestyles)
+    ax.yaxis.tick_right()
+    ax.yaxis.set_label_position("right")
+    plt.yscale("log")
+    plt.plot(np.array(excess_losses).T, lw=4)
+    plt.ylim(ymin=max(10**-30, 10**-.2*np.min(excess_losses)))
+    plt.xlabel("Iterations")
+    plt.ylabel("Excess loss")
+    plt.savefig(path + "_losses.png", bbox_inches="tight")

@@ -6,6 +6,7 @@ class Function(object):
         self.dimension = None
         self.mu = None
         self.L = None
+        self.argmin = None
         self.min_value = None
 
     def forward(self, x):

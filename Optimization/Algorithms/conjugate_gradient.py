@@ -1,6 +1,6 @@
 import numpy as np
 
-from Optimization.Algorithms.algorithm import Algorithm
+from .algorithm import Algorithm
 
 
 class ConjugateGradient(Algorithm):
