@@ -3,7 +3,7 @@ from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .Algorithms import GradientDescent, HeavyBall, ConjugateGradient
+from .algorithms import GradientDescent, HeavyBall, ConjugateGradient
 
 
 def compare_methods(dimension, function, nb_steps, path, seed=None):

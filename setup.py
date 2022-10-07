@@ -24,6 +24,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=[element for element in setuptools.find_packages() if element.startswith('Optimization')],
+    packages=[element for element in setuptools.find_packages() if element.startswith('optimization')],
     python_requires=">=3.6",
 )
