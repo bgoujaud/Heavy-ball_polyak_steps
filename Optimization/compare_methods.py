@@ -44,6 +44,7 @@ def compare_methods(dimension, function, nb_steps, path, seed=None):
     linestyles = ["-", "--"] * 3
 
     plt.figure(figsize=(15, 8))
+    plt.rcParams['axes.linewidth'] = 3
     plt.gca().set_prop_cycle(color=colors, linestyle=linestyles)
     lines = plt.plot(np.log10(distances).T, lw=4)
     plt.ylim(ymin=max(-30, -.2 + np.min(np.log10(distances))))
@@ -57,6 +58,7 @@ def compare_methods(dimension, function, nb_steps, path, seed=None):
     plt.savefig(path + "_legend.png")
 
     fig = plt.figure(figsize=(15, 8))
+    plt.rcParams['axes.linewidth'] = 3
     ax = fig.add_subplot(111)
     ax.set_prop_cycle(color=colors, linestyle=linestyles)
     plt.plot(np.log10(excess_losses).T, lw=4)
