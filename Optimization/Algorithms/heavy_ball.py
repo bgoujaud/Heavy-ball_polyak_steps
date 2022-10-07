@@ -15,7 +15,7 @@ class HeavyBall(Algorithm):
             self.name += " with \nconstant tuning"
             self.set_parameters = lambda **params: self.set_constant_parameters(**params)
         elif parametrization == "Adaptive":
-            self.name += " with \nPolyak step-size based tuning"
+            self.name += " with \nPolyak step-size \nbased tuning"
             self.set_parameters = lambda **params: self.set_adaptive_parameters(**params)
         else:
             raise ValueError("\'parametrization\' must be either \'Constant\' or \'Adaptive\'. Got {}".format(

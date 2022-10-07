@@ -13,7 +13,7 @@ setuptools.setup(
     description="An adaptive Heavy-ball method based on Polyak step-size",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    install_requires=["numpy", "scipy", "matplotlib"],
+    install_requires=["numpy", "scipy", "matplotlib", "tqdm"],
     url="https://github.com/bgoujaud/Heavy-ball_polyak_steps",
     project_urls={
         "Documentation": "https://github.com/bgoujaud/Heavy-ball_polyak_steps/blob/master/README.md",

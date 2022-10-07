@@ -17,7 +17,7 @@ class GradientDescent(HeavyBall):
             self.name += " with \nPolyak step-size"
             self.set_parameters = lambda **params: (self.set_polyak_step_size(**params), 0)
         elif parametrization == "PS variant":
-            self.name += " with \nvariant of Polyak step-size"
+            self.name += " with variant \nof Polyak step-size"
             self.set_parameters = lambda **params: (self.set_polyak_step_size_variant(**params), 0)
         else:
             raise ValueError("\'parametrization\' must be either \'Constant\' or \'PS\' or \'PS variant\'. Got {}".format(

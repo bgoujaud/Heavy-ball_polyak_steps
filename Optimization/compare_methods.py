@@ -1,4 +1,5 @@
 import os
+from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,7 +7,6 @@ from .Algorithms import GradientDescent, HeavyBall, ConjugateGradient
 
 
 def compare_methods(dimension, function, nb_steps, path, seed=None):
-
     np.random.seed(seed=seed)
     distances = list()
     legend_list = list()
@@ -14,14 +14,13 @@ def compare_methods(dimension, function, nb_steps, path, seed=None):
 
     x0 = np.random.randn(dimension).astype(np.float128)
 
-    for alg in [GradientDescent(parametrization="Constant"),
-                GradientDescent(parametrization="PS variant"),
-                GradientDescent(parametrization="PS"),
-                HeavyBall(parametrization="Constant"),
-                HeavyBall(parametrization="Adaptive"),
-                ConjugateGradient()
-                ]:
-
+    for alg in tqdm([GradientDescent(parametrization="Constant"),
+                     GradientDescent(parametrization="PS variant"),
+                     GradientDescent(parametrization="PS"),
+                     HeavyBall(parametrization="Constant"),
+                     HeavyBall(parametrization="Adaptive"),
+                     ConjugateGradient()
+                     ]):
         x_list, f_list = alg.run(function=function, x0=x0, nb_steps=nb_steps)
 
         distance = [np.sum((x - function.argmin) ** 2) for x in x_list]
@@ -46,25 +45,22 @@ def compare_methods(dimension, function, nb_steps, path, seed=None):
 
     plt.figure(figsize=(15, 8))
     plt.gca().set_prop_cycle(color=colors, linestyle=linestyles)
-    plt.yscale("log")
-    lines = plt.plot(np.array(distances).T, lw=4)
-    plt.ylim(ymin=max(10**-30, 10**-.2*np.min(distances)))
+    lines = plt.plot(np.log10(distances).T, lw=4)
+    plt.ylim(ymin=max(-30, -.2 + np.min(np.log10(distances))))
     plt.xlabel("Iterations")
-    plt.ylabel("Distance to optimum")
+    plt.ylabel("Distance (log)")
     plt.savefig(path + "_distances.png", bbox_inches="tight")
 
     legend_fig = plt.figure(figsize=(15, 8))
-    legend_fig.legend(lines, legend_list, fontsize=26, loc='center', fancybox=True, shadow=True)
-    plt.savefig(path + "_legend.png", bbox_inches="tight")
+    legend_fig.legend(lines, legend_list, fontsize=26, loc='center', ncol=3, frameon=False)
+    legend_fig.gca().axis('off')
+    plt.savefig(path + "_legend.png")
 
     fig = plt.figure(figsize=(15, 8))
     ax = fig.add_subplot(111)
     ax.set_prop_cycle(color=colors, linestyle=linestyles)
-    ax.yaxis.tick_right()
-    ax.yaxis.set_label_position("right")
-    plt.yscale("log")
-    plt.plot(np.array(excess_losses).T, lw=4)
-    plt.ylim(ymin=max(10**-30, 10**-.2*np.min(excess_losses)))
+    plt.plot(np.log10(excess_losses).T, lw=4)
+    plt.ylim(ymin=max(-30, -.2 + np.min(np.log10(excess_losses))))
     plt.xlabel("Iterations")
-    plt.ylabel("Excess loss")
+    plt.ylabel("Excess loss (log)")
     plt.savefig(path + "_losses.png", bbox_inches="tight")
